@@ -1,12 +1,10 @@
 class RegistrationsController < Devise::RegistrationsController
-  def new
-    render html: "hello from sign up"
-  end
 
   def create
     @user = User.new(registration_params)
     if @user.save
-      render json: @user
+      token = encode_token(@user.id)
+      render json: {user: @user, token: token}
     else
       render json: {error: @user.errors.full_messages}, status: 422
     end
