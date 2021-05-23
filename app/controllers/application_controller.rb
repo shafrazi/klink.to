@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
+  after_action :track_action
 
   def authenticate_user
     head :unauthorized unless logged_in?
@@ -33,5 +34,11 @@ class ApplicationController < ActionController::Base
 
   def encode_token(payload)
     JWT.encode(payload, secret, "HS256")
+  end
+
+  protected
+
+  def track_action
+    ahoy.track "Ran action", request.path_parameters
   end
 end

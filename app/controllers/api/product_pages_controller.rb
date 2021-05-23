@@ -2,7 +2,7 @@ class Api::ProductPagesController < ApplicationController
   before_action :authenticate_user
   def index
     @product_pages = current_user.product_pages
-    render json: @product_pages
+    render json: {pages: @product_pages, visits: current_visit, user: current_user}
   end
 
   def create
@@ -12,6 +12,10 @@ class Api::ProductPagesController < ApplicationController
     else
       render json: {errors: @product_page.errors.full_messages}, status: :unprocessable_entity
     end
+  end
+
+  def new
+    render json: {visit: current_user.visits, user: current_user, events: current_user.events}
   end
 
   def show
