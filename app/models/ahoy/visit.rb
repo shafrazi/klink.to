@@ -3,4 +3,5 @@ class Ahoy::Visit < ApplicationRecord
 
   has_many :events, class_name: "Ahoy::Event"
   belongs_to :user, optional: true
+  has_many :product_page_data, foreign_key: "ahoy_visit_id"
 end

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'pages/index'
 
   namespace :api do
-    resources :product_pages
+    resources :product_pages, param: :slug
   end
 
   root to: 'pages#index'

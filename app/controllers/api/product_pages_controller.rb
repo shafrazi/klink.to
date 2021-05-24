@@ -15,16 +15,17 @@ class Api::ProductPagesController < ApplicationController
   end
 
   def new
-    render json: {visit: current_user.visits, user: current_user, events: current_user.events}
+    render json: {visit: current_visit, data: current_visit.product_page_data}
   end
 
   def show
-    @product_page = ProductPage.find(params[:id])
-    render json: @product_page
+    @product_page = ProductPage.find_by(slug: params[:id])
+    datum = @product_page.product_page_data.create()
+    render json: {page: @product_page, data: datum.ahoy_visit, count: ProductPageDatum.joins(:ahoy_visit).group("city").count}
   end
 
   def update
-    @product_page = ProductPage.find(params[:id])
+    @product_page = ProductPage.find_by(slug: params[:id])
     if @product_page.update(product_page_params)
       render json: @product_page
     else
@@ -33,7 +34,7 @@ class Api::ProductPagesController < ApplicationController
   end
 
   def destroy
-    @product_page = ProductPage.find(params[:id])
+    @product_page = ProductPage.find_by(slug: params[:id])
     @product_page.destroy
   end
 

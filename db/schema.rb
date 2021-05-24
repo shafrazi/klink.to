@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_22_212948) do
+ActiveRecord::Schema.define(version: 2021_05_23_211750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,13 +80,23 @@ ActiveRecord::Schema.define(version: 2021_05_22_212948) do
     t.index ["user_id"], name: "index_link_items_on_user_id"
   end
 
+  create_table "product_page_data", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "ahoy_visit_id", null: false
+    t.bigint "product_page_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ahoy_visit_id"], name: "index_product_page_data_on_ahoy_visit_id"
+    t.index ["product_page_id"], name: "index_product_page_data_on_product_page_id"
+  end
+
   create_table "product_pages", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "url"
     t.string "title"
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
     t.index ["user_id"], name: "index_product_pages_on_user_id"
   end
 
@@ -107,5 +117,7 @@ ActiveRecord::Schema.define(version: 2021_05_22_212948) do
   add_foreign_key "link_item_data", "link_items"
   add_foreign_key "link_items", "product_pages"
   add_foreign_key "link_items", "users"
+  add_foreign_key "product_page_data", "ahoy_visits"
+  add_foreign_key "product_page_data", "product_pages"
   add_foreign_key "product_pages", "users"
 end
