@@ -21,7 +21,7 @@ class Api::ProductPagesController < ApplicationController
   def show
     @product_page = ProductPage.find_by(slug: params[:id])
     datum = @product_page.product_page_data.create()
-    render json: {page: @product_page, data: datum.ahoy_visit, count: ProductPageDatum.joins(:ahoy_visit).group("city").count}
+    render json: {page: @product_page, data: datum.ahoy_visit, count: ProductPageDatum.joins(:ahoy_visit).group("city").count, link_items: @product_page.link_items}
   end
 
   def update

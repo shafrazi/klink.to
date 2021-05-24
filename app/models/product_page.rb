@@ -9,6 +9,8 @@ class ProductPage < ApplicationRecord
 
   validates :slug, uniqueness: true
 
+
+  # create slug for url
   def create_slug
     loop do
       slug = SecureRandom.alphanumeric(5)
