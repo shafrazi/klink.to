@@ -19,13 +19,13 @@ class Api::ProductPagesController < ApplicationController
   end
 
   def show
-    @product_page = ProductPage.find_by(slug: params[:id])
+    @product_page = ProductPage.find_by(slug: params[:slug])
     datum = @product_page.product_page_data.create()
     render json: {page: @product_page, data: datum.ahoy_visit, count: ProductPageDatum.joins(:ahoy_visit).group("city").count, link_items: @product_page.link_items}
   end
 
   def update
-    @product_page = ProductPage.find_by(slug: params[:id])
+    @product_page = ProductPage.find_by(slug: params[:slug])
     if @product_page.update(product_page_params)
       render json: @product_page
     else
@@ -34,7 +34,7 @@ class Api::ProductPagesController < ApplicationController
   end
 
   def destroy
-    @product_page = ProductPage.find_by(slug: params[:id])
+    @product_page = ProductPage.find_by(slug: params[:slug])
     @product_page.destroy
   end
 

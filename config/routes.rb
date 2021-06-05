@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :product_pages, param: :slug
+    resources :link_items
   end
 
   root to: 'pages#index'
