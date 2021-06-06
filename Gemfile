@@ -42,6 +42,9 @@ gem "ahoy_matey"
 # local geocoding
 gem 'maxminddb'
 
+gem "kimurai"
+
+gem "domainatrix"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

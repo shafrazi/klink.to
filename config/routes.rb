@@ -8,5 +8,7 @@ Rails.application.routes.draw do
   end
 
   root to: 'pages#index'
+
+  post "/api/scrape", to: 'api/scrapes#scrape'
   
 end
