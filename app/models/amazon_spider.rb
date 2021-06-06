@@ -1,11 +1,18 @@
 class AmazonSpider < Kimurai::Base
   @name = "amazon_spider"
   @engine = :mechanize
-  @start_urls = ["https://www.amazon.com/Seagate-Portable-External-Hard-Drive/dp/B07CRG94G3/ref=lp_16225009011_1_8"]
+  
+  def self.process(url)
+    @start_urls = [url]
+    self.crawl!
+  end
 
   def parse(response, url:, data: {})
     item = {}
-    item[:title] = response.xpath("//span[@id='productTitle']").text
+    item[:title] = response.xpath("//span[@id='productTitle']").text.squish
+    item[:price] = response.xpath("//span[@id='price_inside_buybox']").text.squish
+    item[:description] = response.xpath("//div[@id='feature-bullets']").text.squish
+    item[:image] = response.at_css('#landingImage').attr("src")
     return item
   end
 end

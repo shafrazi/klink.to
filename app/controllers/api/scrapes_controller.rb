@@ -13,23 +13,10 @@ class Api::ScrapesController < ApplicationController
     url = params[:url]
     domain = Domainatrix.parse(url).domain
     
-    # if domain === 'amazon' 
-      # AmazonSpider.url(url)
-      # response = AmazonSpider.parse!(:parse, url: url)
-      data = get_data(url)
-      render html: data
-    # end
-  end
-
-  private
-
-  def get_data(url)
-    # driver = Selenium::WebDriver.for :mechanize
-    # driver.get(url)
-    # doc = Nokogiri::HTML(driver.page_source)
-    # return doc.css("title")
-    agent = Mechanize.new
-    page = agent.get(url)
-    return page
+    if domain === 'amazon' 
+      # response = AmazonSpider.process(url)
+      response = AmazonSpider.parse!(:parse, url: url)
+      render json: {data: response}
+    end
   end
 end
