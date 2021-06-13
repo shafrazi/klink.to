@@ -22,10 +22,10 @@ class ApplicationController < ActionController::Base
   end
 
   def decoded_token
-    if request.headers["Authorization"]
-      token = request.headers["Authorization"].split(" ")[1]
+    if request.headers['Authorization']
+      token = request.headers['Authorization'].split(' ')[1]
       begin
-        JWT.decode token, secret, true, {algorithm: 'HS256'}
+        JWT.decode token, secret, true, { algorithm: 'HS256' }
       rescue JWT::DecodeError
         nil
       end
@@ -33,12 +33,17 @@ class ApplicationController < ActionController::Base
   end
 
   def encode_token(payload)
-    JWT.encode(payload, secret, "HS256")
+    JWT.encode(payload, secret, 'HS256')
+  end
+
+  def authorize_user(object)
+    user = User.find(object.user_id)
+    return false unless current_user === user
   end
 
   protected
 
   def track_action
-    ahoy.track "Ran action", request.path_parameters
+    ahoy.track 'Ran action', request.path_parameters
   end
 end

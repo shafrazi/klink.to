@@ -6,6 +6,7 @@ class Api::LinkItemsController < ApplicationController
 
   def show
     @link_item = LinkItem.find(params[:id])
+
     render json: @link_item
   end
 
@@ -17,16 +18,21 @@ class Api::LinkItemsController < ApplicationController
     if @link_item.save
       render json: @link_item
     else
-      render json: {error: @link_item.errors.full_messages}, status: 422
+      render json: { error: @link_item.errors.full_messages }, status: 422
     end
   end
 
   def update
     @link_item = LinkItem.find(params[:id])
-    if @link_item.update(link_item_params)
-      render json: @link_item
+
+    if authorize_user(@link_item)
+      if @link_item.update(link_item_params)
+        render json: @link_item
+      else
+        render json: { error: @link_item.errors.full_messages }, status: 422
+      end
     else
-      render json: {error: @link_item.errors.full_messages}, status: 422
+      head :unauthorized
     end
   end
 
@@ -35,7 +41,7 @@ class Api::LinkItemsController < ApplicationController
     if @link_item.user == current_user
       @link_item.destroy
     else
-      render json: {error: "Invalid operation"}, status: 422
+      render json: { error: 'Invalid operation' }, status: 422
     end
   end
 
