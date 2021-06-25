@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {registrations: :registrations, sessions: :sessions}
+  devise_for :users, controllers: { registrations: :registrations, sessions: :sessions }
   get 'pages/index'
 
   namespace :api do
@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   root to: 'pages#index'
 
-  post "/api/scrape", to: 'api/scrapes#scrape'
-  
+  post '/api/scrape', to: 'api/scrapes#scrape'
+
+  get '/api/traffic_percentage/:id', to: 'api/analytics#traffic_percentage'
 end

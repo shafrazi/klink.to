@@ -1,4 +1,4 @@
-require "securerandom"
+require 'securerandom'
 
 class ProductPage < ApplicationRecord
   before_validation :create_slug
@@ -8,7 +8,6 @@ class ProductPage < ApplicationRecord
   has_many :product_page_data
 
   validates :slug, uniqueness: true
-
 
   # create slug for url
   def create_slug
