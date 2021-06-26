@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :product_pages, param: :slug
     resources :link_items
+    resources :link_item_data, only: [:create]
   end
 
   root to: 'pages#index'
