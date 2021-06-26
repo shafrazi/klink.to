@@ -13,4 +13,5 @@ Rails.application.routes.draw do
 
   get '/api/traffic_percentage/:id', to: 'api/analytics#traffic_percentage'
   get '/api/all_page_traffic', to: 'api/analytics#all_page_traffic'
+  get '/api/overview', to: 'api/analytics#overview'
 end

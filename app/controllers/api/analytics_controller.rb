@@ -3,6 +3,17 @@ class Api::AnalyticsController < ApplicationController
   # when a page is being visited a Visit is created.
   # getting all visit data for a page
 
+  def overview
+    data = {
+      all_page_traffic: all_page_traffic,
+      all_views: all_views,
+      page_count: current_user.product_pages.count,
+      link_count: current_user.link_items.count
+    }
+
+    render json: data
+  end
+
   def traffic_percentage
     data = device_traffic(params[:id])
     render json: get_percentage(data)
@@ -10,7 +21,12 @@ class Api::AnalyticsController < ApplicationController
 
   def all_page_traffic
     page_data = current_user.product_page_data.joins(:ahoy_visit).group('device_type').count
-    render json: get_percentage(page_data)
+    get_percentage(page_data)
+  end
+
+  def all_views
+    views = current_user.product_page_data.count
+    # render json: views
   end
 
   private
