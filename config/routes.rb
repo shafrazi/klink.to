@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   post '/api/scrape', to: 'api/scrapes#scrape'
 
   get '/api/traffic_percentage/:id', to: 'api/analytics#traffic_percentage'
+  get '/api/all_page_traffic', to: 'api/analytics#all_page_traffic'
 end

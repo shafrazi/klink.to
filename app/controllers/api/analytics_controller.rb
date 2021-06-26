@@ -1,24 +1,39 @@
 class Api::AnalyticsController < ApplicationController
+  skip_before_action :track_ahoy_visit
   # when a page is being visited a Visit is created.
   # getting all visit data for a page
-  #
-  def device_traffic(page_id)
-    data = ProductPageDatum.where('product_page_id = ?', page_id).joins(:ahoy_visit).group('device_type').count
-  end
 
   def traffic_percentage
     data = device_traffic(params[:id])
+    render json: get_percentage(data)
+  end
 
-    total_traffic = 0
-    data.each do |_device_type, count|
-      total_traffic += count
+  def all_page_traffic
+    page_data = current_user.product_page_data.joins(:ahoy_visit).group('device_type').count
+    render json: get_percentage(page_data)
+  end
+
+  private
+
+  def get_percentage(data)
+    total_count = 0
+    data.each do |_key, value|
+      total_count += value
     end
 
-    traffic_data = {}
-    data.each do |device_type, count|
-      traffic_data[device_type] = (count.to_f / total_traffic) * 100
+    output = {}
+    data.each do |key, value|
+      if !key
+        output['Other'] = ((value.to_f / total_count) * 100).round
+      else
+        output[key] = ((value.to_f / total_count) * 100).round
+      end
     end
 
-    render json: { traffic: traffic_data }
+    output
+  end
+
+  def device_traffic(page_id)
+    data = ProductPageDatum.where('product_page_id = ?', page_id).joins(:ahoy_visit).group('device_type').count
   end
 end

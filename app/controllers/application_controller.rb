@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
-  after_action :track_action
+  # after_action :track_action
 
   def authenticate_user
     head :unauthorized unless logged_in?
