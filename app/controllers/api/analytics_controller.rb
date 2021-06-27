@@ -8,7 +8,8 @@ class Api::AnalyticsController < ApplicationController
       all_page_traffic: all_page_traffic,
       all_views: all_views,
       page_count: current_user.product_pages.count,
-      link_count: current_user.link_items.count
+      link_count: current_user.link_items.count,
+      link_view_count: current_user.link_item_data.count
     }
 
     render json: data
@@ -26,7 +27,6 @@ class Api::AnalyticsController < ApplicationController
 
   def all_views
     views = current_user.product_page_data.count
-    # render json: views
   end
 
   private

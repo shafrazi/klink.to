@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :product_pages
   has_many :link_items
   has_many :product_page_data, through: :product_pages
+  has_many :link_item_data, through: :link_items
 
   has_many :visits, class_name: 'Ahoy::Visit'
   has_many :events, class_name: 'Ahoy::Event'
