@@ -9,7 +9,13 @@ class Api::AnalyticsController < ApplicationController
       all_views: all_views,
       page_count: current_user.product_pages.count,
       link_count: current_user.link_items.count,
-      link_view_count: current_user.link_item_data.count
+      link_view_count: current_user.link_item_data.count,
+      page_views: {
+        weekly_page_views: current_user.product_page_data.group_by_day(:created_at, last: 7, format: '%b %d').count,
+        monthly_page_views: current_user.product_page_data.group_by_month(:created_at, last: 12, format: '%b %Y').count,
+        views_by_week: current_user.product_page_data.group_by_week(:created_at, last: 10).count
+      },
+      daily_views: current_user.product_page_data.group_by_day(:created_at, last: 365).count
     }
 
     render json: data
