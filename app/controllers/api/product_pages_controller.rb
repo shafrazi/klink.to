@@ -2,7 +2,8 @@ class Api::ProductPagesController < ApplicationController
   before_action :authenticate_user
   def index
     @product_pages = current_user.product_pages
-    render json: { pages: @product_pages, visits: current_visit, user: current_user }
+    render json: { pages: @product_pages, visits: current_visit, user: current_user,
+                   page_views_this_week: views_this_week }
   end
 
   def create
@@ -17,9 +18,13 @@ class Api::ProductPagesController < ApplicationController
   def show
     @product_page = ProductPage.find_by(slug: params[:slug])
 
-    datum = @product_page.product_page_data.create
-    render json: { page: @product_page, data: datum.ahoy_visit,
-                   count: ProductPageDatum.joins(:ahoy_visit).group('city').count, link_items: @product_page.link_items }
+    if @product_page
+      datum = @product_page.product_page_data.create
+      render json: { page: @product_page, data: datum.ahoy_visit,
+                     count: ProductPageDatum.joins(:ahoy_visit).group('city').count, link_items: @product_page.link_items }
+    else
+      render json: { errors: 'Invalid request' }, status: :unprocessable_entity
+    end
   end
 
   def update
@@ -48,5 +53,13 @@ class Api::ProductPagesController < ApplicationController
 
   def product_page_params
     params.require(:product_page).permit(:title, :user_id, :description, :url)
+  end
+
+  def views_this_week
+    total = 0
+    current_user.product_page_data.group_by_day(:created_at, last: 7).count.each do |_key, value|
+      total += value
+    end
+    total
   end
 end
