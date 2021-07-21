@@ -2,8 +2,7 @@ class Api::ProductPagesController < ApplicationController
   before_action :authenticate_user
   def index
     @product_pages = current_user.product_pages
-    render json: { pages: @product_pages, visits: current_visit, user: current_user,
-                   page_views_this_week: views_this_week }
+    render json: { pages: ProductPageSerializer.new(@product_pages).serializable_hash }
   end
 
   def create

@@ -17,4 +17,13 @@ class ProductPage < ApplicationRecord
       break unless ProductPage.where(slug: slug).exists?
     end
   end
+
+  def weekly_views
+    data = product_page_data.group_by_day(:created_at, last: 7).count
+    total = 0
+    data.each do |_key, value|
+      total += value
+    end
+    total
+  end
 end
