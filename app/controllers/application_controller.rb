@@ -38,7 +38,8 @@ class ApplicationController < ActionController::Base
 
   def authorize_user(object)
     user = User.find(object.user_id)
-    return false unless current_user === user
+    # return false unless current_user === user
+    current_user === user
   end
 
   protected
